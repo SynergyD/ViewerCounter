@@ -27,11 +27,18 @@ namespace ViewerCounter.Controllers
 
         public async Task<IActionResult> Index()
         {
-            _logger.LogInformation("Test");
-            await _pageService.RegisterView(new View() {UserId = UserId});
+            int result = 0;
+            try
+            {
+                await _pageService.RegisterView(new View() {UserId = UserId});
 
-            var result = _pageService.GetInfo().Count;
-
+                result = _pageService.GetInfo().Count;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+            
             return View(result);
         }
 
